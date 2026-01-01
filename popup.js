@@ -21,12 +21,12 @@ fillButton.addEventListener('click', async () => {
       tab.id,
       { action: 'fillForm' },
       (response) => {
-        if (chrome.runtime.lastError) {
+        if (!response) {
           showStatus('❌ Could not reach page', 'error');
           return;
         }
         
-        if (response && response.success) {
+        if (response.success) {
           showStatus(`✅ Filled ${response.count} fields!`, 'success');
         } else {
           showStatus('❌ No form fields found', 'error');
@@ -46,12 +46,12 @@ clearButton.addEventListener('click', async () => {
       tab.id,
       { action: 'clearForm' },
       (response) => {
-        if (chrome.runtime.lastError) {
+        if (!response) {
           showStatus('❌ Could not reach page', 'error');
           return;
         }
         
-        if (response && response.success) {
+        if (response.success) {
           showStatus(`✅ Cleared ${response.count} fields!`, 'success');
         } else {
           showStatus('❌ No form fields found', 'error');

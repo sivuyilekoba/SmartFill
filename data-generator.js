@@ -3,10 +3,20 @@
 const DataGenerator = {
   // Generate random email
   generateEmail: function() {
-    const randomString = Math.random().toString(36).substring(2, 10);
+    const firstNames = ['john', 'jane', 'michael', 'sarah', 'david', 'emma', 'james', 'olivia', 'robert', 'sophia'];
+    const lastNames = ['smith', 'johnson', 'williams', 'brown', 'jones', 'garcia', 'miller', 'davis', 'rodriguez', 'martinez'];
     const domains = ['example.com', 'test.com', 'demo.com', 'sample.org'];
+    
+    // Randomly choose first or last name
+    const useFirstName = Math.random() > 0.5;
+    const nameList = useFirstName ? firstNames : lastNames;
+    const name = nameList[Math.floor(Math.random() * nameList.length)];
+    
+    // Optionally add a number suffix (50% chance)
+    const emailBase = Math.random() > 0.5 ? `${name}${Math.floor(Math.random() * 100)}` : name;
+    
     const domain = domains[Math.floor(Math.random() * domains.length)];
-    return `${randomString}@${domain}`;
+    return `${emailBase}@${domain}`;
   },
 
   // Generate random phone number
@@ -161,5 +171,10 @@ const DataGenerator = {
     }
 
     return '';
+  },
+
+  // Generate random boolean for checkboxes
+  generateCheckbox: function() {
+    return Math.random() > 0.5;
   }
 };

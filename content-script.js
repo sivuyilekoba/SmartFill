@@ -15,10 +15,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 function getFormFields() {
   const fields = [];
   
-  // Get all input elements
-  const inputs = document.querySelectorAll('input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="hidden"]):not([type="checkbox"]):not([type="radio"])');
+  // Get all input elements (including checkbox and radio, but excluding buttons and hidden)
+  const inputs = document.querySelectorAll('input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="hidden"])');
   inputs.forEach(input => {
-    if (!input.disabled && !input.readOnly && input.offsetParent !== null) {
+    if (!input.disabled && input.offsetParent !== null) {
       fields.push(input);
     }
   });
@@ -50,7 +50,23 @@ function fillForm() {
   fields.forEach(field => {
     let value = '';
 
-    if (field.tagName === 'SELECT') {
+    if (field.type === 'checkbox') {
+      // Randomly check or uncheck checkbox
+      field.checked = DataGenerator.generateCheckbox();
+      filledCount++;
+    } else if (field.type === 'radio') {
+      // For radio buttons with the same name, pick a random one to check
+      const radioGroup = document.querySelectorAll(`input[type="radio"][name="${field.name}"]`);
+      if (radioGroup.length > 0) {
+        const randomIndex = Math.floor(Math.random() * radioGroup.length);
+        radioGroup.forEach(radio => {
+          radio.checked = radio === radioGroup[randomIndex];
+          radio.dispatchEvent(new Event('change', { bubbles: true }));
+          radio.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+        filledCount++;
+      }
+    } else if (field.tagName === 'SELECT') {
       // For select elements, pick a random option
       const options = field.querySelectorAll('option');
       if (options.length > 1) {
@@ -85,7 +101,9 @@ function clearForm() {
   let clearedCount = 0;
 
   fields.forEach(field => {
-    if (field.tagName === 'SELECT') {
+    if (field.type === 'checkbox' || field.type === 'radio') {
+      field.checked = false;
+    } else if (field.tagName === 'SELECT') {
       field.value = '';
     } else {
       field.value = '';
