@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fillit</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 350px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+    }
+
+    .container {
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 24px;
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: white;
+      color: #667eea;
+      margin-bottom: 10px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .status {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      display: none;
+      word-wrap: break-word;
+    }
+
+    .status.success {
+      background: rgba(76, 175, 80, 0.2);
+      color: white;
+      border: 1px solid rgba(76, 175, 80, 0.5);
+      display: block;
+    }
+
+    .status.error {
+      background: rgba(244, 67, 54, 0.2);
+      color: white;
+      border: 1px solid rgba(244, 67, 54, 0.5);
+      display: block;
+    }
+
+    .status.info {
+      background: rgba(33, 150, 243, 0.2);
+      color: white;
+      border: 1px solid rgba(33, 150, 243, 0.5);
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Fillit</h1>
+    <p class="subtitle">Auto-fill forms with random data</p>
+    
+    <button id="fillButton">🎯 Fill Form</button>
+    <button id="clearButton">🗑️ Clear Form</button>
+    
+    <div id="status" class="status"></div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

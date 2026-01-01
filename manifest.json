@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Fillit - Auto Form Filler",
+  "version": "1.0.0",
+  "description": "Automatically fill web forms with realistic random data",
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Fillit - Fill this form"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "exclude_matches": [
+        "chrome://extensions/*",
+        "chrome://settings/*",
+        "about://*"
+      ],
+      "js": ["data-generator.js", "content-script.js"]
+    }
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ]
+}
