@@ -86,7 +86,7 @@ const DataGenerator = {
   },
 
   // Infer field type from element and generate appropriate data
-  generateForField: function(field) {
+  generateForField: function(field, storedData = null) {
     const fieldType = (field.type || '').toLowerCase();
     const fieldName = (field.name || field.id || '').toLowerCase();
     const placeholder = (field.placeholder || '').toLowerCase();
@@ -94,14 +94,24 @@ const DataGenerator = {
     
     const combinedHint = `${fieldType} ${fieldName} ${placeholder} ${label}`;
 
+    // Check for first name
+    if (combinedHint.includes('first') && combinedHint.includes('name')) {
+      return storedData && storedData.firstName ? storedData.firstName : this.generateName().split(' ')[0];
+    }
+
+    // Check for last name
+    if (combinedHint.includes('last') && combinedHint.includes('name')) {
+      return storedData && storedData.lastName ? storedData.lastName : this.generateName().split(' ')[1];
+    }
+
     // Email detection
     if (fieldType === 'email' || combinedHint.includes('email')) {
-      return this.generateEmail();
+      return storedData && storedData.email ? storedData.email : this.generateEmail();
     }
 
     // Phone detection
     if (fieldType === 'tel' || combinedHint.includes('phone') || combinedHint.includes('telephone')) {
-      return this.generatePhone();
+      return storedData && storedData.phone ? storedData.phone : this.generatePhone();
     }
 
     // URL detection
@@ -132,7 +142,9 @@ const DataGenerator = {
 
     // Name detection
     if (combinedHint.includes('name') && !combinedHint.includes('username')) {
-      return this.generateName();
+      return storedData && storedData.firstName && storedData.lastName 
+        ? `${storedData.firstName} ${storedData.lastName}` 
+        : this.generateName();
     }
 
     // Username/login detection

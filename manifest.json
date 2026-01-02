@@ -5,7 +5,8 @@
   "description": "Automatically fill web forms with realistic random or real locally stored data",
   "permissions": [
     "activeTab",
-    "scripting"
+    "scripting",
+    "storage"
   ],
   "action": {
     "default_popup": "popup.html",

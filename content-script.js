@@ -3,7 +3,7 @@
 // Listen for messages from popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'fillForm') {
-    const count = fillForm();
+    const count = fillForm(request.useStoredData);
     sendResponse({ success: count > 0, count: count });
   } else if (request.action === 'clearForm') {
     const count = clearForm();
@@ -42,18 +42,30 @@ function getFormFields() {
   return fields;
 }
 
-// Fill form with random data
-function fillForm() {
+// Fill form with random or stored data
+function fillForm(useStoredData = false) {
   const fields = getFormFields();
   let filledCount = 0;
 
+  // If using stored data, load it first
+  if (useStoredData) {
+    chrome.storage.local.get(['firstName', 'lastName', 'email', 'phone'], (storedData) => {
+      fillFormWithData(fields, storedData);
+    });
+    return fields.length;
+  } else {
+    fillFormWithData(fields, null);
+    return fields.length;
+  }
+}
+
+function fillFormWithData(fields, storedData) {
   fields.forEach(field => {
     let value = '';
 
     if (field.type === 'checkbox') {
       // Randomly check or uncheck checkbox
       field.checked = DataGenerator.generateCheckbox();
-      filledCount++;
     } else if (field.type === 'radio') {
       // For radio buttons with the same name, pick a random one to check
       const radioGroup = document.querySelectorAll(`input[type="radio"][name="${field.name}"]`);
@@ -64,7 +76,6 @@ function fillForm() {
           radio.dispatchEvent(new Event('change', { bubbles: true }));
           radio.dispatchEvent(new Event('input', { bubbles: true }));
         });
-        filledCount++;
       }
     } else if (field.tagName === 'SELECT') {
       // For select elements, pick a random option
@@ -76,14 +87,12 @@ function fillForm() {
           const randomIndex = startIndex + Math.floor(Math.random() * (options.length - startIndex));
           value = options[randomIndex].value;
           field.value = value;
-          filledCount++;
         }
       }
     } else {
       // For input and textarea elements
-      value = DataGenerator.generateForField(field);
+      value = DataGenerator.generateForField(field, storedData);
       field.value = value;
-      filledCount++;
     }
 
     // Dispatch change and input events to trigger form library listeners
@@ -91,8 +100,6 @@ function fillForm() {
     field.dispatchEvent(new Event('input', { bubbles: true }));
     field.dispatchEvent(new Event('blur', { bubbles: true }));
   });
-
-  return filledCount;
 }
 
 // Clear all form fields
