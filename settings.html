@@ -179,6 +179,55 @@
       color: #6b7280;
       margin-top: 4px;
     }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #e5e7eb, transparent);
+      margin: 32px 0;
+    }
+
+    .danger-section {
+      padding-top: 24px;
+    }
+
+    .danger-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #991b1b;
+      margin-bottom: 12px;
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .danger-description {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .btn-delete {
+      background: var(--error-color);
+      color: white;
+      width: 100%;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-delete:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-delete:active {
+      transform: translateY(0);
+    }
   </style>
 </head>
 <body>
@@ -222,6 +271,14 @@
 
       <div class="status" id="status"></div>
     </form>
+
+    <div class="divider"></div>
+
+    <div class="danger-section">
+      <label class="danger-label">Remove My Data from this PC</label>
+      <p class="danger-description">Delete all your saved personal information. This action cannot be undone.</p>
+      <button id="deleteBtn" class="btn-delete">Delete Data</button>
+    </div>
   </div>
 
   <script src="settings.js"></script>

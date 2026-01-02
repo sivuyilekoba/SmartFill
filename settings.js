@@ -2,6 +2,7 @@
 
 const settingsForm = document.getElementById('settingsForm');
 const closeBtn = document.getElementById('closeBtn');
+const deleteBtn = document.getElementById('deleteBtn');
 const statusDiv = document.getElementById('status');
 
 const firstNameInput = document.getElementById('firstName');
@@ -21,6 +22,14 @@ settingsForm.addEventListener('submit', (e) => {
 // Close settings page
 closeBtn.addEventListener('click', () => {
   window.close();
+});
+
+// Delete data with confirmation
+deleteBtn.addEventListener('click', () => {
+  const confirmDelete = confirm('Are you sure you want to delete all your saved data? This action cannot be undone.');
+  if (confirmDelete) {
+    deleteData();
+  }
 });
 
 function loadSettings() {
@@ -70,6 +79,21 @@ function saveSettings() {
 
   chrome.storage.local.set(dataToSave, () => {
     showStatus('✅ Settings saved successfully!', 'success');
+    setTimeout(() => {
+      window.close();
+    }, 1500);
+  });
+}
+
+function deleteData() {
+  chrome.storage.local.remove(['firstName', 'lastName', 'email', 'phone', 'useStoredData'], () => {
+    // Clear form inputs
+    firstNameInput.value = '';
+    lastNameInput.value = '';
+    emailInput.value = '';
+    phoneInput.value = '';
+    
+    showStatus('✅ All data has been deleted successfully!', 'success');
     setTimeout(() => {
       window.close();
     }, 1500);
