@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "SmartFill - Job Application Autofill",
+  "version": "2.0.0",
+  "description": "Automatically fill job application forms with your saved profile or realistic placeholder data.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "contextMenus"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "SmartFill - fill this form",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "commands": {
+    "fill-application": {
+      "suggested_key": {
+        "default": "Alt+Shift+F"
+      },
+      "description": "Fill the current form"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

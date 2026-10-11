@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartFill Settings</title>
+  <link rel="stylesheet" href="./src/options/options.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="page-header">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11l3 3L22 4"></path>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+        </span>
+        <div>
+          <h1>SmartFill</h1>
+          <p class="subtitle">Your job application profile</p>
+        </div>
+      </div>
+
+      <div class="profile-toolbar">
+        <label class="inline-field">
+          <span>Editing</span>
+          <select id="profileSelect"></select>
+        </label>
+        <button id="newProfileBtn" class="btn btn-ghost" type="button">New profile</button>
+        <button id="deleteProfileBtn" class="btn btn-ghost danger" type="button">Delete</button>
+      </div>
+    </header>
+
+    <section class="card">
+      <h2>Profile</h2>
+      <div class="grid">
+        <label class="span-2"><span>Profile name</span><input type="text" data-path="name" /></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Personal</h2>
+      <div class="grid">
+        <label><span>First name</span><input type="text" data-path="personal.firstName" autocomplete="off" /></label>
+        <label><span>Middle name</span><input type="text" data-path="personal.middleName" autocomplete="off" /></label>
+        <label><span>Last name</span><input type="text" data-path="personal.lastName" autocomplete="off" /></label>
+        <label><span>Preferred name</span><input type="text" data-path="personal.preferredName" autocomplete="off" /></label>
+        <label class="span-2"><span>Full name (optional override)</span><input type="text" data-path="personal.fullName" autocomplete="off" /></label>
+        <label><span>Email</span><input type="email" data-path="personal.email" autocomplete="off" /></label>
+        <label><span>Phone</span><input type="tel" data-path="personal.phone" autocomplete="off" /></label>
+        <label class="span-2"><span>Address line 1</span><input type="text" data-path="personal.address1" autocomplete="off" /></label>
+        <label class="span-2"><span>Address line 2</span><input type="text" data-path="personal.address2" autocomplete="off" /></label>
+        <label><span>City</span><input type="text" data-path="personal.city" autocomplete="off" /></label>
+        <label><span>State / Province</span><input type="text" data-path="personal.state" autocomplete="off" /></label>
+        <label><span>ZIP / Postal code</span><input type="text" data-path="personal.zip" autocomplete="off" /></label>
+        <label><span>Country</span><input type="text" data-path="personal.country" autocomplete="off" /></label>
+        <label><span>Date of birth</span><input type="date" data-path="personal.dob" /></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Links</h2>
+      <div class="grid">
+        <label><span>LinkedIn</span><input type="url" data-path="links.linkedin" autocomplete="off" /></label>
+        <label><span>GitHub</span><input type="url" data-path="links.github" autocomplete="off" /></label>
+        <label><span>Portfolio</span><input type="url" data-path="links.portfolio" autocomplete="off" /></label>
+        <label><span>Website</span><input type="url" data-path="links.website" autocomplete="off" /></label>
+        <label><span>Twitter / X</span><input type="url" data-path="links.twitter" autocomplete="off" /></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Work authorisation</h2>
+      <div class="grid">
+        <label><span>Authorised to work?</span>
+          <select data-path="workAuth.authorizedToWork" data-type="boolean">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+        </label>
+        <label><span>Require sponsorship?</span>
+          <select data-path="workAuth.requiresSponsorship" data-type="boolean">
+            <option value="false">No</option>
+            <option value="true">Yes</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Employment</h2>
+      <div class="grid">
+        <label><span>Current company</span><input type="text" data-path="employment.currentCompany" autocomplete="off" /></label>
+        <label><span>Current job title</span><input type="text" data-path="employment.currentTitle" autocomplete="off" /></label>
+        <label><span>Years of experience</span><input type="text" data-path="employment.yearsExperience" autocomplete="off" /></label>
+        <label><span>Notice period</span><input type="text" data-path="employment.noticePeriod" autocomplete="off" /></label>
+        <label><span>Current salary</span><input type="text" data-path="employment.currentSalary" autocomplete="off" /></label>
+        <label><span>Desired salary</span><input type="text" data-path="employment.desiredSalary" autocomplete="off" /></label>
+      </div>
+      <h3>Most recent previous role</h3>
+      <div class="grid">
+        <label><span>Company</span><input type="text" data-path="employment.previous.0.company" autocomplete="off" /></label>
+        <label><span>Title</span><input type="text" data-path="employment.previous.0.title" autocomplete="off" /></label>
+        <label><span>Start</span><input type="text" data-path="employment.previous.0.start" placeholder="2019-03" autocomplete="off" /></label>
+        <label><span>End</span><input type="text" data-path="employment.previous.0.end" placeholder="2022-08" autocomplete="off" /></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Education</h2>
+      <div class="grid">
+        <label><span>Degree</span><input type="text" data-path="education.degree" autocomplete="off" /></label>
+        <label><span>School</span><input type="text" data-path="education.school" autocomplete="off" /></label>
+        <label><span>Field of study</span><input type="text" data-path="education.fieldOfStudy" autocomplete="off" /></label>
+        <label><span>Graduation year</span><input type="text" data-path="education.graduationYear" autocomplete="off" /></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Demographics (optional)</h2>
+      <p class="note">Used only to fill EEO questions. Leave blank to skip them.</p>
+      <div class="grid">
+        <label><span>Gender</span><input type="text" data-path="eeo.gender" autocomplete="off" /></label>
+        <label><span>Race / ethnicity</span><input type="text" data-path="eeo.race" autocomplete="off" /></label>
+        <label><span>Veteran status</span><input type="text" data-path="eeo.veteran" autocomplete="off" /></label>
+        <label><span>Disability status</span><input type="text" data-path="eeo.disability" autocomplete="off" /></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Long answers</h2>
+      <div class="grid">
+        <label class="span-2"><span>About yourself</span><textarea rows="3" data-path="longText.aboutYourself"></textarea></label>
+        <label class="span-2"><span>Why this company?</span><textarea rows="3" data-path="longText.whyCompany"></textarea></label>
+        <label class="span-2"><span>Cover letter</span><textarea rows="5" data-path="longText.coverLetter"></textarea></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Data</h2>
+      <div class="data-actions">
+        <button id="exportBtn" class="btn btn-ghost" type="button">Export JSON</button>
+        <button id="importBtn" class="btn btn-ghost" type="button">Import JSON</button>
+        <button id="deleteAllBtn" class="btn btn-danger" type="button">Delete all data</button>
+        <input id="importInput" type="file" accept="application/json" hidden />
+      </div>
+      <p class="note">Everything is stored locally in this browser. SmartFill never sends your data anywhere.</p>
+    </section>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="./src/options/options.ts"></script>
+</body>
+</html>
