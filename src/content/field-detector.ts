@@ -18,6 +18,7 @@ export interface FieldDescriptor {
   labels: string[];
   legend: string;
   surroundingText: string;
+  precedingText: string;
   required: boolean;
   maxLength: number | null;
   min: string;
@@ -67,12 +68,22 @@ export function getLegendText(el: HTMLElement): string {
   return (legend?.textContent ?? '').replace(/\s+/g, ' ').trim();
 }
 
-/** Text near the field (preceding sibling + parent copy without the controls). */
-function getSurroundingText(el: HTMLElement): string {
+const LABEL_LIKE_TAGS = new Set(['LABEL', 'SPAN', 'DIV', 'P', 'B', 'STRONG', 'H1', 'H2', 'H3', 'H4', 'TD', 'TH', 'DT', 'LI']);
+
+/**
+ * Text of the nearest preceding element when it looks like a field label.
+ * Many ATS layouts (`<div><label>Name</label><input></div>` without `for`) rely
+ * on this instead of a proper label association.
+ */
+function getPrecedingText(el: HTMLElement): string {
   let sibling = el.previousElementSibling;
   while (sibling && !(sibling.textContent ?? '').trim()) sibling = sibling.previousElementSibling;
-  const siblingText = (sibling?.textContent ?? '').replace(/\s+/g, ' ').trim();
+  if (!sibling || !LABEL_LIKE_TAGS.has(sibling.tagName)) return '';
+  return (sibling.textContent ?? '').replace(/\s+/g, ' ').trim().slice(0, 60);
+}
 
+/** Text in the field's immediate wrapper, with controls stripped out. */
+function getSurroundingText(el: HTMLElement): string {
   let parentText = '';
   const parent = el.parentElement;
   if (parent && (parent.textContent ?? '').length < 400) {
@@ -83,7 +94,7 @@ function getSurroundingText(el: HTMLElement): string {
     parentText = (clone.textContent ?? '').replace(/\s+/g, ' ').trim();
   }
 
-  return `${siblingText} ${parentText}`.trim().slice(0, 160);
+  return parentText.slice(0, 160);
 }
 
 /**
@@ -123,6 +134,7 @@ export function describeElement(el: HTMLElement): FieldDescriptor | null {
   const placeholder = (el.getAttribute('placeholder') ?? '').trim();
   const legend = getLegendText(el);
   const surroundingText = getSurroundingText(el);
+  const precedingText = getPrecedingText(el);
   const isFile = tagName === 'INPUT' && (el as HTMLInputElement).type === 'file';
 
   const options: FieldOption[] =
@@ -156,6 +168,7 @@ export function describeElement(el: HTMLElement): FieldDescriptor | null {
     labels,
     legend,
     surroundingText,
+    precedingText,
     required: el.hasAttribute('required') || el.getAttribute('aria-required') === 'true',
     maxLength,
     min: el.getAttribute('min') ?? '',

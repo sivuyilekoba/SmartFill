@@ -35,7 +35,9 @@ export interface Profile {
     state: string;
     zip: string;
     country: string;
+    nationality: string;
     dob: string;
+    driversLicence: string;
   };
   links: {
     linkedin: string;
@@ -54,6 +56,7 @@ export interface Profile {
     yearsExperience: string;
     currentSalary: string;
     desiredSalary: string;
+    salaryRate: string;
     noticePeriod: string;
     previous: WorkExperience[];
   };
@@ -82,7 +85,7 @@ export interface ProfileStore {
   defaultId: string | null;
 }
 
-export const SCHEMA_VERSION = 2;
+export const SCHEMA_VERSION = 3;
 const PROFILES_KEY = 'smartfill.profiles';
 const DEFAULT_ID_KEY = 'smartfill.defaultProfileId';
 const SCHEMA_KEY = 'smartfill.schemaVersion';
@@ -99,17 +102,38 @@ export function emptyProfile(name = 'My Profile'): Profile {
     personal: {
       firstName: '', middleName: '', lastName: '', preferredName: '', fullName: '',
       email: '', phone: '', address1: '', address2: '', city: '', state: '', zip: '',
-      country: '', dob: ''
+      country: '', nationality: '', dob: '', driversLicence: ''
     },
     links: { linkedin: '', github: '', portfolio: '', website: '', twitter: '' },
     workAuth: { authorizedToWork: true, requiresSponsorship: false },
     employment: {
       currentCompany: '', currentTitle: '', yearsExperience: '', currentSalary: '',
-      desiredSalary: '', noticePeriod: '', previous: []
+      desiredSalary: '', salaryRate: '', noticePeriod: '', previous: []
     },
     education: { degree: '', school: '', fieldOfStudy: '', graduationYear: '', history: [] },
     eeo: { gender: '', race: '', veteran: '', disability: '' },
     longText: { aboutYourself: '', whyCompany: '', coverLetter: '' }
+  };
+}
+
+/**
+ * Fills in any fields missing from a stored profile (for example a profile saved
+ * by an older version) using the current defaults, so adding new categories never
+ * breaks existing data.
+ */
+export function normalizeProfile(profile: Profile): Profile {
+  const base = emptyProfile(profile.name || 'My Profile');
+  return {
+    ...base,
+    ...profile,
+    id: profile.id || base.id,
+    personal: { ...base.personal, ...(profile.personal ?? {}) },
+    links: { ...base.links, ...(profile.links ?? {}) },
+    workAuth: { ...base.workAuth, ...(profile.workAuth ?? {}) },
+    employment: { ...base.employment, ...(profile.employment ?? {}), previous: profile.employment?.previous ?? [] },
+    education: { ...base.education, ...(profile.education ?? {}), history: profile.education?.history ?? [] },
+    eeo: { ...base.eeo, ...(profile.eeo ?? {}) },
+    longText: { ...base.longText, ...(profile.longText ?? {}) }
   };
 }
 
@@ -151,7 +175,7 @@ export async function loadStore(): Promise<ProfileStore> {
   const store = raw[PROFILES_KEY] as ProfileStore | undefined;
 
   if (store && Array.isArray(store.profiles) && store.profiles.length > 0) {
-    return { profiles: store.profiles, defaultId: store.defaultId ?? store.profiles[0].id };
+    return { profiles: store.profiles.map(normalizeProfile), defaultId: store.defaultId ?? store.profiles[0].id };
   }
 
   const migrated = await migrateLegacy();
@@ -238,7 +262,9 @@ export function valueFromProfile(profile: Profile, category: Category): string |
     case 'state': return p.state || null;
     case 'zip': return p.zip || null;
     case 'country': return p.country || null;
+    case 'nationality': return p.nationality || null;
     case 'dob': return p.dob || null;
+    case 'driversLicence': return p.driversLicence || null;
 
     case 'linkedin': return links.linkedin || null;
     case 'github': return links.github || null;
@@ -254,6 +280,7 @@ export function valueFromProfile(profile: Profile, category: Category): string |
     case 'yearsExperience': return emp.yearsExperience || null;
     case 'currentSalary': return emp.currentSalary || null;
     case 'desiredSalary': return emp.desiredSalary || null;
+    case 'salaryRate': return emp.salaryRate || null;
     case 'noticePeriod': return emp.noticePeriod || null;
     case 'prevCompany': return firstPrevious(profile)?.company || null;
     case 'prevTitle': return firstPrevious(profile)?.title || null;

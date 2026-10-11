@@ -18,6 +18,9 @@ const STATES = [
   'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
 ];
 const COUNTRIES = ['United States', 'Canada', 'United Kingdom', 'Australia', 'Germany', 'Netherlands', 'South Africa', 'India', 'Brazil', 'Singapore'];
+const NATIONALITIES = ['South African', 'American', 'British', 'Canadian', 'Australian', 'German', 'Dutch', 'Indian', 'Nigerian', 'Kenyan', 'Brazilian', 'Singaporean'];
+const DRIVING_LICENCE = ['Yes', 'Code 8', 'Code 10', 'Code B', 'Full licence'];
+const SALARY_RATES = ['Per Annum', 'Per Month', 'Per Hour', 'Annual', 'Monthly', 'Hourly'];
 const COMPANIES = ['Acme Corp', 'Globex', 'Initech', 'Umbrella Labs', 'Northwind Traders', 'Stark Industries', 'Wayne Enterprises'];
 const TITLES = ['Software Engineer', 'Senior Software Engineer', 'Product Manager', 'Data Analyst', 'UX Designer', 'Project Manager', 'Business Analyst'];
 const DEGREES = ["Bachelor's Degree", "Master's Degree", 'Associate Degree', 'Doctorate', 'High School Diploma'];
@@ -25,8 +28,10 @@ const FIELDS_OF_STUDY = ['Computer Science', 'Information Technology', 'Software
 const SCHOOLS = ['State University', 'Institute of Technology', 'City College', 'University of Cape Town', 'National University'];
 const GENDERS = ['Male', 'Female', 'Decline to self-identify'];
 const RACES = [
-  'American Indian or Alaska Native', 'Asian', 'Black or African American',
-  'Hispanic or Latino', 'White', 'Two or More Races', 'Decline to self-identify'
+  'African', 'Coloured', 'Indian', 'White', 'Asian',
+  'Black or African American', 'Hispanic or Latino',
+  'American Indian or Alaska Native', 'Two or More Races',
+  'Prefer not to say', 'Decline to self-identify'
 ];
 const VETERAN_STATUS = [
   'I am not a protected veteran',
@@ -79,7 +84,9 @@ export function randomValueFor(category: Category): string | boolean | null {
     case 'state': return pick(STATES);
     case 'zip': return digits(5);
     case 'country': return pick(COUNTRIES);
+    case 'nationality': return pick(NATIONALITIES);
     case 'dob': return randomDateWithinYears(40);
+    case 'driversLicence': return pick(DRIVING_LICENCE);
 
     case 'linkedin': return `https://www.linkedin.com/in/${slug.replace('.', '-')}`;
     case 'github': return `https://github.com/${slug.replace('.', '')}`;
@@ -93,6 +100,7 @@ export function randomValueFor(category: Category): string | boolean | null {
     case 'currentCompany': return pick(COMPANIES);
     case 'currentTitle': return pick(TITLES);
     case 'yearsExperience': return String(Math.floor(Math.random() * 15) + 1);
+    case 'salaryRate': return pick(SALARY_RATES);
     case 'currentSalary': return String((Math.floor(Math.random() * 8) + 5) * 10000);
     case 'desiredSalary': return String((Math.floor(Math.random() * 8) + 6) * 10000);
     case 'noticePeriod': return pick(['Immediately', '2 weeks', '30 days', '1 month']);

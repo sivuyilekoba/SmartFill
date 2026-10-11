@@ -35,6 +35,7 @@ function buildSignals(field: FieldDescriptor): Signal[] {
   if (field.name) signals.push({ text: normalizeText(field.name), weight: 4, strong: true });
   if (field.id) signals.push({ text: normalizeText(field.id), weight: 4, strong: true });
   if (field.placeholder) signals.push({ text: normalizeText(field.placeholder), weight: 3, strong: false });
+  if (field.precedingText) signals.push({ text: normalizeText(field.precedingText), weight: 6, strong: true });
   if (field.surroundingText) signals.push({ text: normalizeText(field.surroundingText), weight: 1, strong: false });
 
   return signals;

@@ -18,7 +18,7 @@ placeholder data** — so you stop re-typing the same details after uploading yo
 - **Dummy mode** — plausible, clearly fictional data (example.com emails, 555 phone numbers).
 - **Safety first** — never fills file inputs, captchas, or sensitive fields like SSN/card numbers.
 - **Undo** — one click restores the values that were on the page before filling.
-- **Shortcut + context menu** — `Alt+Shift+F` or right-click → *SmartFill: fill this form*.
+- **Shortcut + context menu** — `Alt+Shift+F` or right-click → _SmartFill: fill this form_.
 
 ## Install (development build)
 
@@ -63,12 +63,12 @@ src/
 
 ## Permissions & privacy
 
-| Permission | Why |
-| --- | --- |
-| `activeTab` | Reads the current page **only after you click** the extension or use the shortcut. |
-| `scripting` | Injects the fill engine into that tab on demand. |
-| `storage` | Saves your profiles locally. |
-| `contextMenus` | Adds the right-click "fill this form" entry. |
+| Permission     | Why                                                                                |
+| -------------- | ---------------------------------------------------------------------------------- |
+| `activeTab`    | Reads the current page **only after you click** the extension or use the shortcut. |
+| `scripting`    | Injects the fill engine into that tab on demand.                                   |
+| `storage`      | Saves your profiles locally.                                                       |
+| `contextMenus` | Adds the right-click "fill this form" entry.                                       |
 
 SmartFill makes **no network requests**. Your profile never leaves your browser — see
 [PRIVACY.md](PRIVACY.md).

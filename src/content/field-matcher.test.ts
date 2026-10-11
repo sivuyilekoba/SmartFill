@@ -12,8 +12,8 @@ function descriptorFor(html: string, selector = 'input, textarea, select'): Fiel
   return descriptor;
 }
 
-function categoryOf(html: string): string {
-  return matchField(descriptorFor(html)).category;
+function categoryOf(html: string, selector = 'input, textarea, select'): string {
+  return matchField(descriptorFor(html, selector)).category;
 }
 
 describe('matchField', () => {
@@ -56,6 +56,36 @@ describe('matchField', () => {
 
   it('returns unknown for an unlabelled generic field', () => {
     expect(categoryOf('<input id="zz9" name="zz9" type="text">')).toBe('unknown');
+  });
+
+  it('handles the labels from a typical job application form', () => {
+    const cases: Array<[string, string]> = [
+      ['Nationality', 'nationality'],
+      ['Cellphone', 'phone'],
+      ['Employment Equity', 'race'],
+      ['Drivers Licence', 'driversLicence'],
+      ['Availability', 'noticePeriod'],
+      ['Salary', 'desiredSalary'],
+      ['Salary Rate', 'salaryRate']
+    ];
+
+    for (const [label, expected] of cases) {
+      const html = `<div><label for="f">${label} *</label><input id="f" type="text"></div>`;
+      expect(categoryOf(html)).toBe(expected);
+    }
+  });
+
+  it('distinguishes current salary from desired salary', () => {
+    expect(categoryOf('<label for="a">Current Salary</label><input id="a" type="text">')).toBe('currentSalary');
+    expect(categoryOf('<label for="b">Desired Salary</label><input id="b" type="text">')).toBe('desiredSalary');
+  });
+
+  it('treats a passport number as a protected field', () => {
+    expect(categoryOf('<label for="pp">Passport Number</label><input id="pp" type="text">')).toBe('ssn');
+  });
+
+  it('detects a label placed as a preceding sibling without a for attribute', () => {
+    expect(categoryOf('<div><span>Cellphone</span><input type="text" name="x1"></div>')).toBe('phone');
   });
 });
 
